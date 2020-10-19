@@ -19,7 +19,7 @@ s.listen(2)
 print("Aguardando todos sobreviventes...")
 
 currentId = "0"
-pos = ["0:100,50", "1:200,100"]
+pos = ["0:100,50", "1:200,100"] #player1, player2
 
 def threaded_client(conn):
     global currentId, pos
@@ -28,6 +28,7 @@ def threaded_client(conn):
     reply = ''
     while True:
         try:
+            # recebe e decodifica client package
             data = conn.recv(2048)
             reply = data.decode('utf-8')
             if not data:
@@ -37,19 +38,19 @@ def threaded_client(conn):
                 #print("Recebido: " + reply)
                 arr = reply.split(":")
                 id = int(arr[0])
-                pos[id] = reply
+                pos[id] = reply #atualiza player pos
 
                 if id == 0: nid = 1
                 if id == 1: nid = 0
 
                 reply = pos[nid][:]
                 #print("Enviando: " + reply)
-
+            # codifica e envia 
             conn.sendall(str.encode(reply))
         except:
             break
 
-    print("Conexão de", currentId ,"encerrada.")
+    print("Conexão de",currentId,"encerrada.") #
     conn.close()
 
 while True:
