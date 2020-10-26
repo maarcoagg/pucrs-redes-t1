@@ -2,6 +2,7 @@ import socket
 from _thread import *
 import sys
 
+#SERVER THREAD
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server = '192.168.25.5'
@@ -16,13 +17,14 @@ except socket.error as e:
     print(str(e))
 
 s.listen(2)
-print("Aguardando todos sobreviventes...")
+print("Aguardando todos jogadores...")
 
 currentId = "0"
-pos = ["0:100,50", "1:200,100"] #player1, player2
-
+pos = ["0:0,0,0,0", "1:0,0,0,0"] #player1, player2
+turn = 0
+#CLIENT THREAD
 def threaded_client(conn):
-    global currentId, pos
+    global currentId, pos, turn
     conn.send(str.encode(currentId))
     currentId = "1"
     reply = ''
@@ -35,16 +37,25 @@ def threaded_client(conn):
                 conn.send(str.encode("Adeus!"))
                 break
             else:
-                #print("Recebido: " + reply)
+                
                 arr = reply.split(":")
                 id = int(arr[0])
+                if id == turn:
+                    played = int(arr[1].split(",")[3])
+                    if played == 1:
+                        if id > 0:
+                            turn = 0
+                        else:
+                            turn = 1
+                        
                 pos[id] = reply #atualiza player pos
 
                 if id == 0: nid = 1
                 if id == 1: nid = 0
+                aux = pos[nid][:]
+                aux = aux[:-1]
+                reply = aux + str(turn)
 
-                reply = pos[nid][:]
-                #print("Enviando: " + reply)
             # codifica e envia 
             conn.sendall(str.encode(reply))
         except:
