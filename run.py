@@ -1,9 +1,8 @@
 import game
-
 import socket
 import sys
 
-HOST = '192.168.25.7'
+HOST = 'localhost'
 PORT = 5000
 
 try:

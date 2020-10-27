@@ -12,7 +12,7 @@ class Player:
 if __name__ == "__main__":
     CONNECTION_LIST = []
     RECV_BUFFER = 2048
-    SERVER = '192.168.25.7'
+    SERVER = 'localhost'
     PORT = 5000
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     CONNECTION_LIST.append(server_socket)
 
     players = [Player(1), Player(2)]
-    turn_now = -1
+    turn_now = 0
     game_status = -1
     running = False
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
                         elif args > 1:   
                             if not running:
                                 sock.send(str.encode('0,1,conectando'))
-                            else:   # game is running...
+                            else:   # jogo rodando...
                                 
                                 this_id = int(reply.split(":")[0]) # id do player atual
                                 other_id = swap_id(this_id) # id do adversario

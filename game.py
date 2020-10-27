@@ -1,7 +1,6 @@
 import pygame
 import random
 import sys
-from network import Network
 
 class Player():
     radius = 25 
@@ -11,8 +10,6 @@ class Player():
         self.y = starty
         self.color = color
         self.next_pos = -1
-        #self.played = 0
-        #self.connected = conn
 
     def draw(self, g):
         pygame.draw.circle(g, self.color ,(self.x, self.y), self.radius,  0)
@@ -48,8 +45,6 @@ class Game:
     def run(self):
         clock = pygame.time.Clock()
         run = True
-        #played = False
-        #ended = False
         while run:
             clock.tick(60)
             for event in pygame.event.get():
@@ -57,10 +52,9 @@ class Game:
                 keys = pygame.key.get_pressed()
 
                 if keys[pygame.K_ESCAPE]:
-                    #self.player.connected = 0
                     run = False
                     pygame.quit()
-                """
+
                 if self.status == "conectando":
                     self.canvas.draw_background()
                     self.board.draw()
@@ -69,25 +63,25 @@ class Game:
                     self.player2.draw(self.canvas.get_canvas())
                     self.info.awaiting_conn()
                 else:
-                    """
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse = pygame.mouse.get_pos()
-                    width = self.canvas.width
-                    height = self.canvas.height
-                    if width-100 <= mouse[0] <= width and 0 <= mouse[1] <= 50: 
-                        if self.id == self.turn:
-                            # it's your turn
-                            self.info.show_status("Jogador",self.id,"está jogando o dado...")
-                            dice = random.randint(1,6)
-                            print("Jogador",self.id,"rolou o dado e tirou",dice)
-                            self.player.next_pos = self.player.next_pos + dice
-                            self.ended = self.player.jump(self.board)
-                            status = "jogou"
-                            break
-                        else:
-                            self.info.awaiting_turn
-                            
-                            # not your turn
+    
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        mouse = pygame.mouse.get_pos()
+                        width = self.canvas.width
+                        height = self.canvas.height
+                        if width-100 <= mouse[0] <= width and 0 <= mouse[1] <= 50: 
+                            if self.id == self.turn:
+                                # it's your turn
+                                self.info.show_status("Jogador",self.id,"está jogando o dado...")
+                                dice = random.randint(1,6)
+                                print("Jogador",self.id,"rolou o dado e tirou",dice)
+                                self.player.next_pos = self.player.next_pos + dice
+                                self.ended = self.player.jump(self.board)
+                                status = "jogou"
+                                break
+                            else:
+                                # not your turn
+                                print ("Aguarde o seu turno para jogar!")
+                                self.info.awaiting_turn
 
             send = str(self.id)+":"+str(self.player.next_pos)+","+str(self.status)
             print("Jogador",str(self.id),"vai enviar:",send)
@@ -206,7 +200,6 @@ class Canvas:
 
     def draw_box(self, color, x, y, w, h):
         pygame.draw.rect(self.display_surface,color,(x,y,w,h),0)
-        # codigo de retangulo aqui ---------------
         
     def get_canvas(self):
         return self.display_surface
